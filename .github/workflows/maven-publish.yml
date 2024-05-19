@@ -24,6 +24,33 @@ jobs:
     - name: Build with Maven
       run: mvn clean install -DskipTests=true
 
+    - name: Clean deployment folder
+      run: |
+        ssh -i ~/.ssh/id_ed25519 user@45.141.102.127 "rm -rf /opt/docker/OutAdapter/*"
+
+    - name: Deploy to specific folder
+      run: |
+        scp -i ~/.ssh/id_ed25519 \
+        build/artifacts/*.jar \
+        user@45.141.102.127:/opt/docker/OutAdapter
+
+    - name: Deploy application.yml
+      run: |
+        scp -i ~/.ssh/id_ed25519 \
+        application.yml \
+        user@45.141.102.127:/opt/docker/OutAdapter/application.yml
+
+
+    - uses: appleboy/ssh-action@master
+      name: Deploy via SSH
+      with:
+        host: 45.141.102.127
+        username: "root"
+        password: "0NCwBIrIoX"
+        key: ${{ secrets.DEPLOY_KEY }}
+        script: |
+          docker-compose up -d outAdapter
+
 #    - name: Publish to GitHub Packages Apache Maven
 #      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
 #      env:
