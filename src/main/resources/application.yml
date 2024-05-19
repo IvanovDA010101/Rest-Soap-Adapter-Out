@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: OutAdapter
+  main:
+    banner-mode: "off"
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:postgresql://45.141.102.127:5432/devsdb
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: 'true'
+    show-sql: 'true'
+  rabbitmq:
+    host: 45.141.102.127
+    port: 5672
+    username: eip
+    password: eip
+    virtual-host: /
+    connection-timeout: 6000
+    template:
+      exchange: PISH
+    queue:
+      rest-receive-request: REST.RECEIVE.REQUEST
+      soap-receive-request: SOAP.RECEIVE.REQUEST
+      transfering-receive-request: TRANSFERRING.RECEIVE.REQUEST
+      response-queue: RESPONSE.QUEUE
+      error-queue: ERROR.QUEUE
+  #spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.xml
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
+
+
+service:
+  name: OutAdapter
+
+server:
+  port: 8081
