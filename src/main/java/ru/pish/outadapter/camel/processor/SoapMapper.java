@@ -5,7 +5,6 @@ import org.apache.camel.Processor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.pish.education.Employees;
-import ru.pish.outadapter.models.dto.EmployeesDTO;
 import ru.pish.outadapter.services.SoapEmployeeService;
 
 @Component
