@@ -17,6 +17,7 @@ public class RestMapper implements Processor {
 
     @Override
     public void process(Exchange exchange) throws Exception {
+
         EmployeesDTO body = exchange.getIn().getBody(EmployeesDTO.class);
         restEmployeeService.writeEmployee(body);
     }
