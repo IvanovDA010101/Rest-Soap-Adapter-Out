@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS Employees (
                                          FirstName VARCHAR(255) NOT NULL,
                                          LastName VARCHAR(255) NOT NULL,
                                          MiddleName VARCHAR(255),
-                                         Birthdate DATE NOT NULL,
+                                         Birthdate TEXT ,
     -- Связывание с таблицей "Отделы"
                                          DepartmentUuid VARCHAR(255) REFERENCES Departments (Uuid),
     -- Связывание с таблицей "Должности"

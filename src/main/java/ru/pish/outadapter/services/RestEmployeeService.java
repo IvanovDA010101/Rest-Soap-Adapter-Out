@@ -1,6 +1,10 @@
 package ru.pish.outadapter.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 import ru.pish.outadapter.models.dto.EmployeeDTO;
 import ru.pish.outadapter.models.dto.EmployeesDTO;
@@ -15,6 +19,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Service
+@EnableCaching
+@CacheConfig(cacheNames = "employeeCache")
 public class RestEmployeeService {
 
     @Autowired
@@ -24,11 +30,13 @@ public class RestEmployeeService {
     @Autowired
     private PositionRepository positionRepository;
 
+    @Cacheable(key = "#categoryId", value = "employeeCache")
     public void writeEmployee(EmployeesDTO employees) {
         for (EmployeeDTO employeeDTO : employees.getEmployees()) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate birthdate = LocalDate.parse(employeeDTO.getBirthdate(), formatter);
+//            Date birthdate = Date.from(Instant.parse(employeeDTO.getBirthdate()));
+            LocalDate birthdate = null;
 
             DepartmentsDM departmentsDM = DepartmentsDM.builder()
                     .uuid(employeeDTO.getJobInformation().getDepartment().getUuid())
@@ -60,9 +68,13 @@ public class RestEmployeeService {
 
         }
     }
-
+    @Cacheable(key = "#categoryId", value = "employeeCache")
     public EmployeeDM getEmployeeById(Long id) {
         return employeeRepository.getReferenceById(id);
     }
 
+    @CacheEvict
+    public void deleteEmployeeById(Long id){
+        employeeRepository.deleteById(id);
+    }
 }

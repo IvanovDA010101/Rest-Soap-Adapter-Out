@@ -1,0 +1,29 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java environment
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+
+      - name: Build with Maven
+        run: mvn clean install
+#
+#      - name: Deploy to server
+#        uses: actions/rsync@v0.1.0
+#        with:
+#          src: 'target/*.war'
+#          dest: '/path/to/deployment/directory'
+#          host: 'server.example.com'
+#          user: 'deploy'
+#          args: '-avz --delete'

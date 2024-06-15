@@ -13,8 +13,10 @@ import ru.pish.outadapter.repositories.DepartmentsRepository;
 import ru.pish.outadapter.repositories.EmployeeRepository;
 import ru.pish.outadapter.repositories.PositionRepository;
 
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Service
 public class SoapEmployeeService {
@@ -29,9 +31,12 @@ public class SoapEmployeeService {
     public void writeEmployee(Employees employees) {
         for (EmployeeItem employeeDTO : employees.getEmployee()) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate birthdate = LocalDate.parse(employeeDTO.getBirthdate().toString(), formatter);
+        // Получение XMLGregorianCalendar из employeeDTO
+            XMLGregorianCalendar xmlGregCal = employeeDTO.getBirthdate();
 
+// Преобразование XMLGregorianCalendar в объект Date
+//            Date birthdate = xmlGregCal.toGregorianCalendar().getTime();
+            LocalDate birthdate = null;
             DepartmentsDM departmentsDM = DepartmentsDM.builder()
                     .uuid(employeeDTO.getJobInformation().getDepartment().getUuid())
                     .description(employeeDTO.getJobInformation().getDepartment().getDescription())

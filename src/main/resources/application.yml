@@ -5,7 +5,7 @@ spring:
     banner-mode: "off"
     allow-bean-definition-overriding: true
   datasource:
-    url: jdbc:postgresql://45.141.102.127:5432/devsdb
+    url: jdbc:postgresql://localhost:5432/devsdb
     username: postgres
     password: 1234
     driver-class-name: org.postgresql.Driver
